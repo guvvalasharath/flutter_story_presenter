@@ -434,7 +434,7 @@ class _FlutterStoryPresenterState extends State<FlutterStoryPresenter>
           Positioned.fill(
             child: StoryCustomWidgetWrapper(
               isAutoStart: true,
-              key: UniqueKey(),
+              key: ValueKey('$currentIndex'),
               builder: (audioPlayer) {
                 return currentItem.customWidget!(
                         widget.flutterStoryController, audioPlayer) ??
@@ -559,6 +559,44 @@ class _FlutterStoryPresenterState extends State<FlutterStoryPresenter>
                             storyViewIndicatorConfig: storyViewIndicatorConfig,
                           ),
               ],
+            ),
+          ),
+        ),
+        Align(
+          alignment: Alignment.centerLeft,
+          child: SizedBox(
+            width: size.width * .2,
+            height: size.height,
+            child: GestureDetector(
+              onTap: () async {
+                if (widget.onLeftTap != null) {
+                  final shouldPlayPrevious = await widget.onLeftTap!();
+                  if (shouldPlayPrevious) {
+                    _playPrevious();
+                  }
+                } else {
+                  _playPrevious();
+                }
+              },
+            ),
+          ),
+        ),
+        Align(
+          alignment: Alignment.centerRight,
+          child: SizedBox(
+            width: size.width * .2,
+            height: size.height,
+            child: GestureDetector(
+              onTap: () async {
+                if (widget.onRightTap != null) {
+                  final shouldPlayNext = await widget.onRightTap!();
+                  if (shouldPlayNext) {
+                    _playNext();
+                  }
+                } else {
+                  _playNext();
+                }
+              },
             ),
           ),
         ),
